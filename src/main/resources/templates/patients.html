@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<link rel="stylesheet" href="webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+<body>
+  <div layout:fragment="content1">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">
+        Liste of patients
+      </div>
+      <div class="card-body">
+        <form method="get" th:action="@{index}">
+          <label>Key word</label>
+          <input type="text" name="keyword" th:value="${Keyword}">
+          <button type="submit" class="btn btn-primary"> Find </button>
+        </form>
+
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Id</th> <th>Nom</th> <th>Date</th> <th>Malade</th> <th>score</th><th>Options</th>
+          </tr>
+
+          </thead>
+          <tbody class="table">
+          <tr th:each="p:${listPatients}">
+            <td th:text="${p.getId()}"></td>
+            <td th:text="${p.getName()}"></td>
+            <td th:text="${p.getBirthDate()}"></td>
+            <td th:text="${p.isMalade()}"></td>
+            <td th:text="${p.getScore()}"></td>
+            <td>
+              <a onclick="return confirm('Are you sure ?')" class="btn btn-outline-danger" th:href="@{delete(id=${p.getId()}, keyword=${Keyword}, page=${currentPage})}">Delete</a>
+              <a onclick="return confirm('Are you sure ?')" class="btn btn-outline-success" th:href="@{modifyPatient(id=${p.getId()}, keyword=${keyword}, page=${currentPage})}">Modify</a>
+
+            </td>
+          </tr>
+
+
+          </tbody>
+        </table>
+        <ul class="nav nav-pills">
+          <li th:each="page,status:${pages}">
+            <a th:class="${status.index==currentPage?'btn btn-secondary ms-1':'btn btn-outline-secondary ms-1'}"
+               th:text="${status.index}"
+               th:href="@{index(page=${status.index}, Keyword=${Keyword})}"></a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+  </div>
+
+</body>
+</html>
